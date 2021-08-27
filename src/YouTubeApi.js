@@ -12,10 +12,11 @@ class YouTubeApi {
             'https://www.googleapis.com/auth/youtube',
             'https://www.googleapis.com/auth/youtube.force-ssl'
         ];
-        this.clientId = process.env.CLIENT_ID;
-        this.clientSecret = process.env.CLIENT_SECRET;
         this.redirectURI = 'http://localhost:3000/callback';
-        this.auth = new OAuth2(this.clientId, this.clientSecret, this.redirectURI);
+        this.auth = new OAuth2(process.env.CLIENT_ID,
+            process.env.CLIENT_SECRET,
+            this.redirectURI
+        );
         this.liveChatId;
         this.nextPage;
         this.intervalTime = 5000;

@@ -14,7 +14,8 @@ class YouTubeApi {
             'https://www.googleapis.com/auth/youtube.force-ssl'
         ];
         this.redirectURI = 'http://localhost:3000/callback';
-        this.auth = new OAuth2(process.env.CLIENT_ID,
+        this.auth = new OAuth2(
+            process.env.CLIENT_ID,
             process.env.CLIENT_SECRET,
             this.redirectURI
         );
@@ -47,17 +48,17 @@ class YouTubeApi {
     }
 
     registerCommand(command, cb) {
-        if (command.startWith('!')) {
-            commands.set(command.toLowerCase(), cb);
+        if (command.startsWith('!')) {
+            this.commands.set(command.toLowerCase(), cb);
         } else {
             console.error('Command must contain an exclamation mark!');
         }
     }
 
     callCommand(command, message) {
-        const message = this.commands.get(command)(command, message);
+        const returnmessage = this.commands.get(command)(command, message);
         if (message)
-            this.getLiveChatInteractions().insertChatMessage(message);
+            this.getLiveChatInteractions().insertChatMessage(returnmessage);
     }
 
     getOAuth() {
@@ -155,10 +156,10 @@ class YouTubeApi {
                     pageToken: this.nextPage
                 });
                 const { data } = response;
-                const newMessages = data.items;
-                newMessages.map(ytmsg => this.getUtils().satisfyMessage(ytmsg));
+                const newMessages = data.items.map(ytmsg => this.getUtils().satisfyMessage(ytmsg));
                 newMessages.forEach(msg => {
-                    if (msg.message.startWith('!')) {
+                    console.log(msg);
+                    if (msg.message.startsWith('!')) {
                         const command = msg.message.split(' ')[0];
                         console.log('Command detected: ' + command);
                         this.callCommand(command, message);

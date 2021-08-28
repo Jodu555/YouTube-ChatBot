@@ -6,6 +6,7 @@ const OAuth2 = google.auth.OAuth2;
 class YouTubeApi {
     constructor() {
         this.callbacks = new Map();
+        this.commands = new Map();
         this.init = false;
         this.scope = [
             'https://www.googleapis.com/auth/youtube.readonly',
@@ -43,6 +44,20 @@ class YouTubeApi {
         if (key == 'init')
             this.init = true;
         this.callbacks.get(key)(obj);
+    }
+
+    registerCommand(command, cb) {
+        if (command.startWith('!')) {
+            commands.set(command.toLowerCase(), cb);
+        } else {
+            console.error('Command must contain an exclamation mark!');
+        }
+    }
+
+    callCommand(command, message) {
+        const message = this.commands.get(command)(command, message);
+        if (message)
+            this.getLiveChatInteractions().insertChatMessage(message);
     }
 
     getOAuth() {
@@ -141,6 +156,7 @@ class YouTubeApi {
                 });
                 const { data } = response;
                 const newMessages = data.items;
+                newMessages.map(ytmsg => this.getUtils().satisfyMessage(ytmsg));
                 newMessages.forEach(newMessage => {
                     this.callCallback('newMessage', newMessage);
                 });

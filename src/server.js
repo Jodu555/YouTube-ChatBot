@@ -12,11 +12,13 @@ youtubeApi.setCallback('init', async () => {
   // youtubeApi.getLiveChatInteractions().insertChatMessage('Hello from the NodeJS Application Second');
 });
 
-youtubeApi.setCallback('newMessage', (ytmessage) => {
-  const message = youtubeApi.getUtils().satisfyMessage(ytmessage);
+youtubeApi.registerCommand('!uptime', (command, message) => {
+  return 'Der Stream ist bereits seit ' + youtubeApi.getLiveChatInteractions().getStreamUptime() + ' Live!'
+});
+
+youtubeApi.setCallback('newMessage', (message) => {
   console.log(message);
   if (message.message.includes('!uptime')) {
-    const message = 'Der Stream ist bereits seit ' + youtubeApi.getLiveChatInteractions().getStreamUptime() + ' Live!';
     youtubeApi.getLiveChatInteractions().insertChatMessage(message);
   }
   if (message.message.includes('!ts')) {

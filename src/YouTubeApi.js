@@ -208,6 +208,15 @@ class YouTubeApi {
                     console.error(error);
                 }
             },
+            deleteChatMessage: (messageId) => {
+                try {
+                    youtube.liveChatMessages.delete({
+                        id: messageId,
+                    });
+                } catch (error) {
+                    console.error(error);
+                }
+            },
             startMessageTracking: () => {
                 this.interval = setInterval(this.getLiveChatInteractions().getChatMessages, this.intervalTime);
             }

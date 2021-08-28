@@ -20,7 +20,7 @@ youtubeApi.registerCommand('!ts', (command, message) => {
 })
 
 youtubeApi.setCallback('newMessage', (message) => {
-  // console.log(message);
+  console.log(message);
 
 });
 

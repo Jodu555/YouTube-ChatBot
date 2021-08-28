@@ -15,13 +15,12 @@ youtubeApi.setCallback('init', async () => {
 youtubeApi.registerCommand('!uptime', (command, message) => {
   return 'Der Stream ist bereits seit ' + youtubeApi.getLiveChatInteractions().getStreamUptime() + ' Live!'
 });
+youtubeApi.registerCommand('!ts', (command, message) => {
+  return 'Teamspeak: server1.Jodu555.de';
+})
 
 youtubeApi.setCallback('newMessage', (message) => {
-  console.log(message);
-  if (message.message.includes('!ts')) {
-    youtubeApi.getLiveChatInteractions().insertChatMessage('Teamspeak: server1.Jodu555.de!');
-  }
-
+  // console.log(message);
 
 });
 

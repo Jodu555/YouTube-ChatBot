@@ -158,11 +158,9 @@ class YouTubeApi {
                 const { data } = response;
                 const newMessages = data.items.map(ytmsg => this.getUtils().satisfyMessage(ytmsg));
                 newMessages.forEach(msg => {
-                    console.log(msg);
                     if (msg.message.startsWith('!')) {
                         const command = msg.message.split(' ')[0];
-                        console.log('Command detected: ' + command);
-                        this.callCommand(command, message);
+                        this.callCommand(command, msg);
                     }
                     this.callCallback('newMessage', msg);
                 });

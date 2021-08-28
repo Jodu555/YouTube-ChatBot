@@ -8,4 +8,4 @@ My own personal Youtube ChatBot to interact with the chat over commands and more
 * [ ] Add System to track the users Watchtime
 * [ ] Implement moderation systems
 * [ ] Implement ban systems
-* [ ] Prevent the bot from re answering all old questions
+* [x] Prevent the bot from re answering all old questions

@@ -158,7 +158,8 @@ class YouTubeApi {
                 const { data } = response;
                 const newMessages = data.items.map(ytmsg => this.getUtils().satisfyMessage(ytmsg));
                 newMessages.forEach(msg => {
-                    if (msg.message.startsWith('!')) {
+                    //Check for next Page to prevent from re answering the old questions
+                    if (this.nextPage && msg.message.startsWith('!')) {
                         const command = msg.message.split(' ')[0];
                         this.callCommand(command, msg);
                     }

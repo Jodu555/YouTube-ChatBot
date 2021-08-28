@@ -18,9 +18,6 @@ youtubeApi.registerCommand('!uptime', (command, message) => {
 
 youtubeApi.setCallback('newMessage', (message) => {
   console.log(message);
-  if (message.message.includes('!uptime')) {
-    youtubeApi.getLiveChatInteractions().insertChatMessage(message);
-  }
   if (message.message.includes('!ts')) {
     youtubeApi.getLiveChatInteractions().insertChatMessage('Teamspeak: server1.Jodu555.de!');
   }

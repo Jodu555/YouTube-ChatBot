@@ -157,8 +157,13 @@ class YouTubeApi {
                 const { data } = response;
                 const newMessages = data.items;
                 newMessages.map(ytmsg => this.getUtils().satisfyMessage(ytmsg));
-                newMessages.forEach(newMessage => {
-                    this.callCallback('newMessage', newMessage);
+                newMessages.forEach(msg => {
+                    if (msg.message.startWith('!')) {
+                        const command = msg.message.split(' ')[0];
+                        console.log('Command detected: ' + command);
+                        this.callCommand(command, message);
+                    }
+                    this.callCallback('newMessage', msg);
                 });
                 this.chatMessages.push(...newMessages);
                 this.nextPage = data.nextPageToken;

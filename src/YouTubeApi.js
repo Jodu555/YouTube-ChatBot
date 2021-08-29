@@ -169,7 +169,10 @@ class YouTubeApi {
                         this.callCommand(command, msg);
                     }
                     //Check for badwords
-
+                    if (this.badwords.some(v => msg.message.toLowerCase().includes(v.toLowerCase()))) {
+                        console.log('Bad Words detected');
+                        this.getLiveChatInteractions().deleteChatMessage(msg.id);
+                    }
 
 
                     this.callCallback('newMessage', msg);
@@ -220,6 +223,7 @@ class YouTubeApi {
             deleteChatMessage: (messageId) => {
                 try {
                     youtube.liveChatMessages.delete({
+                        auth: this.auth,
                         id: messageId,
                     });
                 } catch (error) {

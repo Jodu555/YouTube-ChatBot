@@ -1,6 +1,7 @@
 const { google } = require('googleapis');
 const fs = require('fs');
 const youtube = google.youtube('v3');
+const fetch = require('node-fetch');
 const OAuth2 = google.auth.OAuth2;
 
 class YouTubeApi {
@@ -8,7 +9,7 @@ class YouTubeApi {
         this.callbacks = new Map();
         this.commands = new Map();
         this.init = false;
-        this.timeTillAway = 1000 * 60 * 5 //When user doesnt write for 5 Minutes he isn't more in the chat 
+        this.timeTillAway = 1000 * 60 * 5; //When user doesnt write for 5 Minutes he isn't more in the chat 
         this.scope = [
             'https://www.googleapis.com/auth/youtube.readonly',
             'https://www.googleapis.com/auth/youtube',
@@ -40,11 +41,14 @@ class YouTubeApi {
         this.callbacks.set(key, callback);
     }
 
-    callCallback(key, obj) {
+    async callCallback(key, obj) {
         if (key == 'init' && this.init)
             return;
-        if (key == 'init')
+        if (key == 'init') {
             this.init = true;
+            const response = await fetch('http://docs.jodu555.de/badwords/de.json');
+            this.badwords = await response.json();
+        }
         this.callbacks.get(key)(obj);
     }
 
@@ -164,6 +168,10 @@ class YouTubeApi {
                         const command = msg.message.split(' ')[0];
                         this.callCommand(command, msg);
                     }
+                    //Check for badwords
+
+
+
                     this.callCallback('newMessage', msg);
                 });
                 this.chatMessages.push(...newMessages);

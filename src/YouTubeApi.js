@@ -8,6 +8,7 @@ class YouTubeApi {
         this.callbacks = new Map();
         this.commands = new Map();
         this.init = false;
+        this.timeTillAway = 1000 * 60 * 5 //When user doesnt write for 5 Minutes he isn't more in the chat 
         this.scope = [
             'https://www.googleapis.com/auth/youtube.readonly',
             'https://www.googleapis.com/auth/youtube',

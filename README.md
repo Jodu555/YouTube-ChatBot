@@ -11,3 +11,4 @@ My own personal Youtube ChatBot to interact with the chat over commands and more
 * [x] Prevent the bot from re answering all old questions
 * [ ] Add badwords prevention
 * [ ] Add Spam prevention
+* [ ] Add A Scoket system wich emits new messages

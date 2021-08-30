@@ -1,5 +1,4 @@
 const { google } = require('googleapis');
-const fs = require('fs');
 const youtube = google.youtube('v3');
 const fetch = require('node-fetch');
 
@@ -21,8 +20,11 @@ class YouTubeApi {
         this.oauth = new OAuth();
         this.auth = this.oauth.auth;
 
-        const response = await fetch('http://docs.jodu555.de/badwords/de.json');
-        this.badwords = await response.json();
+        this.setCallback('init', async () => {
+            const response = await fetch('http://docs.jodu555.de/badwords/de.json');
+            this.badwords = await response.json();
+        });
+
     }
 
     setCallback(key, callback) {

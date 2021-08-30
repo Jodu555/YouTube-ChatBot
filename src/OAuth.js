@@ -1,5 +1,6 @@
 const { google } = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
+const fs = require('fs');
 
 class OAuth {
     constructor() {
@@ -51,6 +52,7 @@ class OAuth {
             }
             this.callCallback('init');
         } catch (error) {
+            console.error(error);
             console.log('Error checkTokens');
         }
     }

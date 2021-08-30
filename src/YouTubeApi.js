@@ -2,8 +2,8 @@ const { google } = require('googleapis');
 const fs = require('fs');
 const youtube = google.youtube('v3');
 const fetch = require('node-fetch');
-const OAuth2 = google.auth.OAuth2;
-const oAuth = require('./OAuth')
+
+const OAuth = require('./OAuth')
 
 class YouTubeApi {
     constructor() {
@@ -20,20 +20,27 @@ class YouTubeApi {
         this.items = [];
         this.oauth = new OAuth();
         this.auth = this.oauth.auth;
+
+        const response = await fetch('http://docs.jodu555.de/badwords/de.json');
+        this.badwords = await response.json();
     }
 
     setCallback(key, callback) {
-        this.callbacks.set(key, callback);
+        if (this.callbacks.has(key)) {
+            if (typeof this.callbacks.get(key) == 'function') {
+                this.callbacks.set(key, [this.callbacks.get(key), callback]); callback
+            } else {
+                this.callbacks.set(key, [...this.callbacks.get(key), callback]); callback
+            }
+        } else {
+            this.callbacks.set(key, callback);
+        }
     }
 
     async callCallback(key, obj) {
-        if (key == 'init' && this.init)
-            return;
-        if (key == 'init') {
-            this.init = true;
-            const response = await fetch('http://docs.jodu555.de/badwords/de.json');
-            this.badwords = await response.json();
-        }
+        if (key == 'init' && this.init) return;
+        if (key == 'init') this.init = true;
+
         this.callbacks.get(key)(obj);
     }
 

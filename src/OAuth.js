@@ -1,5 +1,7 @@
-class OAuth {
+const { google } = require('googleapis');
+const OAuth2 = google.auth.OAuth2;
 
+class OAuth {
     constructor() {
         this.scope = [
             'https://www.googleapis.com/auth/youtube.readonly',

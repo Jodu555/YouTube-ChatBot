@@ -3,6 +3,7 @@ const fs = require('fs');
 const youtube = google.youtube('v3');
 const fetch = require('node-fetch');
 const OAuth2 = google.auth.OAuth2;
+const oAuth = require('./OAuth')
 
 class YouTubeApi {
     constructor() {
@@ -10,17 +11,6 @@ class YouTubeApi {
         this.commands = new Map();
         this.init = false;
         this.timeTillAway = 1000 * 60 * 5; //When user doesnt write for 5 Minutes he isn't more in the chat 
-        this.scope = [
-            'https://www.googleapis.com/auth/youtube.readonly',
-            'https://www.googleapis.com/auth/youtube',
-            'https://www.googleapis.com/auth/youtube.force-ssl'
-        ];
-        this.redirectURI = 'http://localhost:3000/callback';
-        this.auth = new OAuth2(
-            process.env.CLIENT_ID,
-            process.env.CLIENT_SECRET,
-            this.redirectURI
-        );
         this.liveChatId;
         this.nextPage;
         this.intervalTime = 5000;
@@ -28,13 +18,8 @@ class YouTubeApi {
         this.chatMessages = [];
 
         this.items = [];
-
-        this.auth.on('tokens', tokens => {
-            if (tokens.refresh_token) {
-                fs.writeFileSync('./tokens.json', JSON.stringify(this.auth.tokens));
-            }
-        });
-        this.getOAuth().checkTokens();
+        this.oauth = new OAuth();
+        this.auth = this.oauth.auth;
     }
 
     setCallback(key, callback) {
@@ -66,39 +51,7 @@ class YouTubeApi {
             this.getLiveChatInteractions().insertChatMessage(returnmessage);
     }
 
-    getOAuth() {
-        return {
-            getAuthURL: () => {
-                const authUrl = this.auth.generateAuthUrl({
-                    access_type: 'offline',
-                    scope: this.scope
-                });
-                return authUrl;
-            },
-            authorize: async (code) => {
-                const credentials = await this.auth.getToken(code);
-                this.auth.setCredentials(tokens);
-                fs.writeFileSync('./tokens.json', JSON.stringify(tokens));
-                console.log('Successfully get credentials');
-                this.callCallback('init');
-            },
-            checkTokens: async () => {
-                try {
-                    //TODO: file stuff
-                    const tokens = JSON.parse(await fs.readFileSync('./tokens.json'));
-                    if (tokens) {
-                        this.auth.setCredentials(tokens);
-                        console.log('tokens set');
-                    } else {
-                        console.log('no tokens set');
-                    }
-                    this.callCallback('init');
-                } catch (error) {
-                    console.log('Error checkTokens');
-                }
-            }
-        }
-    }
+    getOAuth() { return this.oauth }
 
     getUtils() {
         return {

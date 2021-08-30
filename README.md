@@ -12,4 +12,4 @@ My own personal Youtube ChatBot to interact with the chat over commands and more
 * [x] Add badwords prevention
 * [ ] Maybe ban player if hes using badwords
 * [ ] Add Spam prevention
-* [ ] Add A Scoket system wich emits new messages
+* [ ] Add A Socket system wich emits new messages

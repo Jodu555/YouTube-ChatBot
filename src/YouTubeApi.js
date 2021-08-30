@@ -17,7 +17,7 @@ class YouTubeApi {
         this.chatMessages = [];
 
         this.items = [];
-        this.oauth = new OAuth();
+        this.oauth = new OAuth(this);
         this.auth = this.oauth.auth;
 
         this.setCallback('init', async () => {
@@ -43,7 +43,15 @@ class YouTubeApi {
         if (key == 'init' && this.init) return;
         if (key == 'init') this.init = true;
 
-        this.callbacks.get(key)(obj);
+        if (typeof this.callbacks.get(key) == 'function') {
+            this.callbacks.get(key)(obj);
+        } else {
+            this.callbacks.get(key).forEach(fun => {
+                fun(obj);
+            });
+        }
+
+
     }
 
     registerCommand(command, cb) {

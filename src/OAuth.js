@@ -3,7 +3,8 @@ const OAuth2 = google.auth.OAuth2;
 const fs = require('fs');
 
 class OAuth {
-    constructor() {
+    constructor(parent) {
+        this.parent = parent;
         this.scope = [
             'https://www.googleapis.com/auth/youtube.readonly',
             'https://www.googleapis.com/auth/youtube',
@@ -37,7 +38,7 @@ class OAuth {
         this.auth.setCredentials(tokens);
         fs.writeFileSync('./tokens.json', JSON.stringify(tokens));
         console.log('Successfully get credentials');
-        this.callCallback('init');
+        this.parent.callCallback('init');
     }
 
     async checkTokens() {
@@ -50,7 +51,7 @@ class OAuth {
             } else {
                 console.log('no tokens set');
             }
-            this.callCallback('init');
+            this.parent.callCallback('init');
         } catch (error) {
             console.error(error);
             console.log('Error checkTokens');

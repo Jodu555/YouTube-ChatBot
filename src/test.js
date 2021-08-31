@@ -15,7 +15,17 @@ setTimeout(() => {
     onNewMessage('Jodu555', '2 Seconds');
 }, 2000);
 
-//TODO: Maybe append a time to see if user is away before hes sending a new message to trigger
+setInterval(() => {
+    userAwayMap.forEach((value, key) => {
+        const diff = Date.now() - value;
+        if (!(diff < timeTillAway)) {
+            userAwayMap.delete(key);
+            console.log('User Deleted cause inactivity: ' + key);
+        } else {
+            console.log(diff);
+        }
+    });
+}, 10000);
 
 
 function updateWatchTimeAndSetCoins(user, time) {

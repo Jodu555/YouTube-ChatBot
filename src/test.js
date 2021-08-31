@@ -15,6 +15,8 @@ setTimeout(() => {
     onNewMessage('Jodu555', '2 Seconds');
 }, 2000);
 
+//TODO: Maybe append a time to see if user is away before hes sending a new message to trigger
+
 
 function updateWatchTimeAndSetCoins(user, time) {
     if (userDataMap.has(user)) {
@@ -36,6 +38,8 @@ function onNewMessage(user, msg) {
         const diff = Date.now() - lastSeen;
         if (diff < timeTillAway) {
             updateWatchTimeAndSetCoins(user, diff);
+        } else {
+            console.log('User was away');
         }
     } else {
         userAwayMap.set(user, Date.now());

@@ -11,7 +11,7 @@ class YouTubeApi {
         this.timeTillAway = 1000 * 60 * 5; //When user doesnt write for 5 Minutes he isn't more in the chat 
         this.liveChatId;
         this.nextPage;
-        this.intervalTime = 5000;
+        this.intervalTime = 7000;
         this.interval;
         this.chatMessages = [];
 

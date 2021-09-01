@@ -22,7 +22,14 @@ youtubeApi.registerCommand('!uptime', (command, message) => {
 });
 youtubeApi.registerCommand('!ts', (command, message) => {
   return 'Teamspeak: server1.Jodu555.de';
-})
+});
+youtubeApi.registerCommand('!watchtime', (command, message) => {
+});
+
+youtubeApi.registerCommand('!coins', (command, message) => {
+});
+
+
 
 youtubeApi.setCallback('newMessage', (message) => {
   // console.log(message);

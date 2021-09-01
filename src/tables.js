@@ -7,9 +7,9 @@ function create() {
             PK: 'channelId',
             K: ['displayName'],
         },
-        channelId: 'TEXT',
+        channelId: 'VARCHAR(512)',
         channelUrl: 'TEXT',
-        displayName: 'TEXT',
+        displayName: 'VARCHAR(512)',
         profileImageUrl: 'TEXT',
         badges: 'TEXT',
     });

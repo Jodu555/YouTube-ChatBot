@@ -2,8 +2,7 @@ const dotenv = require('dotenv').config();
 const express = require('express');
 const server = express();
 const { Database } = require('@jodu555/mysqlapi');
-
-const database = Database.createDatabase('host', 'username', 'password', 'database');
+const database = Database.createDatabase('localhost', 'root', '', 'yt-chatbot');
 database.connect();
 require('./tables').create();
 

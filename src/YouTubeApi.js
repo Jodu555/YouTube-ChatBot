@@ -9,6 +9,9 @@ class YouTubeApi {
         this.commands = new Map();
         this.init = false;
         this.timeTillAway = 1000 * 60 * 5; //When user doesnt write for 5 Minutes he isn't more in the chat 
+        this.userAwayMap = new Map();
+        this.userDataMap = new Map();
+        this.coinsPerMinute = 1;
         this.liveChatId;
         this.nextPage;
         this.intervalTime = 7000;
@@ -49,8 +52,6 @@ class YouTubeApi {
                 fun(obj);
             });
         }
-
-
     }
 
     registerCommand(command, cb) {

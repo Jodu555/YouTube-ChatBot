@@ -147,7 +147,7 @@ class YouTubeApi {
                     if (this.userAwayMap.has(user)) {
                         const lastSeen = this.userAwayMap.get(user);
                         const diff = Date.now() - lastSeen;
-                        if (diff < timeTillAway) {
+                        if (diff < this.timeTillAway) {
                             this.getLiveChatInteractions().updateWatchTimeAndSetCoins(user, diff);
                         } else {
                             console.log('User was away');
@@ -166,11 +166,11 @@ class YouTubeApi {
                 if (this.userDataMap.has(user)) {
                     const content = this.userDataMap.get(user);
                     content.watchtime += time;
-                    content.coins += Math.floor(time / 1000 / 60 * coinsPerMinute);
+                    content.coins += Math.floor(time / 1000 / 60 * this.coinsPerMinute);
                 } else {
                     this.userDataMap.set(user, {
                         watchtime: time,
-                        coins: Math.floor(time / 1000 / 60 * coinsPerMinute),
+                        coins: Math.floor(time / 1000 / 60 * this.coinsPerMinute),
                     })
                 }
             },

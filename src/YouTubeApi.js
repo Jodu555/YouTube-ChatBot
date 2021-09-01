@@ -144,13 +144,36 @@ class YouTubeApi {
                         this.getLiveChatInteractions().deleteChatMessage(msg.id);
                     }
 
+                    if (this.userAwayMap.has(user)) {
+                        const lastSeen = this.userAwayMap.get(user);
+                        const diff = Date.now() - lastSeen;
+                        if (diff < timeTillAway) {
+                            this.getLiveChatInteractions().updateWatchTimeAndSetCoins(user, diff);
+                        } else {
+                            console.log('User was away');
+                        }
+                    } else {
+                        userAwayMap.set(user, Date.now());
+                    }
 
                     this.callCallback('newMessage', msg);
                 });
                 this.chatMessages.push(...newMessages);
                 this.nextPage = data.nextPageToken;
             },
-
+            updateWatchTimeAndSetCoins: (user, time) => {
+                //TODO: Implement the database here
+                if (this.userDataMap.has(user)) {
+                    const content = this.userDataMap.get(user);
+                    content.watchtime += time;
+                    content.coins += Math.floor(time / 1000 / 60 * coinsPerMinute);
+                } else {
+                    this.userDataMap.set(user, {
+                        watchtime: time,
+                        coins: Math.floor(time / 1000 / 60 * coinsPerMinute),
+                    })
+                }
+            },
             getStreamUptime: () => {
                 let duration = Date.now() - this.startTime.getTime();
 

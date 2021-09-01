@@ -15,6 +15,7 @@ function create() {
         watchtime: 'INT',
         coins: 'INT',
     });
+    //TODO: Maybe add an table with the unique chat messages
 }
 
 module.exports = {

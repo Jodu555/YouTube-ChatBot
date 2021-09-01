@@ -12,6 +12,8 @@ function create() {
         displayName: 'VARCHAR(512)',
         profileImageUrl: 'TEXT',
         badges: 'TEXT',
+        watchtime: 'INT',
+        coins: 'INT',
     });
 }
 

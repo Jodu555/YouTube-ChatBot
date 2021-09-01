@@ -1,7 +1,12 @@
 const dotenv = require('dotenv').config();
 const express = require('express');
 const server = express();
-const mysql = require('@jodu555/mysqlapi');
+const { Database } = require('@jodu555/mysqlapi');
+
+const database = Database.createDatabase('host', 'username', 'password', 'database');
+database.connect();
+require('./tables').create();
+
 const YouTubeApi = require('./YouTubeApi');
 
 

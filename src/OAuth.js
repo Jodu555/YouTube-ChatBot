@@ -43,7 +43,6 @@ class OAuth {
 
     async checkTokens() {
         try {
-            //TODO: file stuff
             const tokens = JSON.parse(await fs.readFileSync('./tokens.json'));
             if (tokens) {
                 this.auth.setCredentials(tokens);

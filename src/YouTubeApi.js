@@ -2,6 +2,8 @@ const { google } = require('googleapis');
 const youtube = google.youtube('v3');
 const fetch = require('node-fetch');
 const OAuth = require('./OAuth')
+const { Database } = require('@jodu555/mysqlapi');
+const database = Database.getDatabase();
 
 class YouTubeApi {
     constructor() {
@@ -143,24 +145,32 @@ class YouTubeApi {
                         console.log('Bad Words detected');
                         this.getLiveChatInteractions().deleteChatMessage(msg.id);
                     }
+                    this.manageWatchTimeAndCoins(msg);
 
-                    if (this.userAwayMap.has(user)) {
-                        const lastSeen = this.userAwayMap.get(user);
-                        const diff = Date.now() - lastSeen;
-                        if (diff < this.timeTillAway) {
-                            this.getLiveChatInteractions().updateWatchTimeAndSetCoins(user, diff);
-                        } else {
-                            console.log('User was away');
-                        }
-                    } else {
-                        userAwayMap.set(user, Date.now());
-                    }
 
                     this.callCallback('newMessage', msg);
                 });
                 this.chatMessages.push(...newMessages);
                 this.nextPage = data.nextPageToken;
             },
+
+            manageWatchTimeAndCoins: (msg) => {
+                // database.get('chatuser').getOne({
+                //     searchColumName: 'searchColumValue',
+                // });
+                if (this.userAwayMap.has(user)) {
+                    const lastSeen = this.userAwayMap.get(user);
+                    const diff = Date.now() - lastSeen;
+                    if (diff < this.timeTillAway) {
+                        this.getLiveChatInteractions().updateWatchTimeAndSetCoins(user, diff);
+                    } else {
+                        console.log('User was away');
+                    }
+                } else {
+                    userAwayMap.set(user, Date.now());
+                }
+            },
+
             updateWatchTimeAndSetCoins: (user, time) => {
                 //TODO: Implement the database here
                 if (this.userDataMap.has(user)) {

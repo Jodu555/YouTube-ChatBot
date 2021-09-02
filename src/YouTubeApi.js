@@ -178,7 +178,7 @@ class YouTubeApi {
                     };
                     update.watchtime += time;
                     update.coins += Math.floor(time / 1000 / 60 * this.coinsPerMinute);
-                    const update = await database.get('tablename').update({ channelId: user.channelId }, { ...update });
+                    await database.get('tablename').update({ channelId: user.channelId }, { ...update });
                 } else {
                     database.get('chatuser').create({
                         ...user,

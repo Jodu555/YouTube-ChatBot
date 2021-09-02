@@ -23,10 +23,13 @@ youtubeApi.registerCommand('!uptime', (command, message) => {
 youtubeApi.registerCommand('!ts', (command, message) => {
   return 'Teamspeak: server1.Jodu555.de';
 });
-youtubeApi.registerCommand('!watchtime', (command, message) => {
+youtubeApi.registerCommand('!watchtime', async (command, message) => {
+  const user = await youtubeApi.getUtils().getUserData(message.author.channelID);
+  return 'Du guckst den Stream bereits seid ' + user.watchtime / 1000 + ' Sekunden';
 });
-
 youtubeApi.registerCommand('!coins', (command, message) => {
+  const user = await youtubeApi.getUtils().getUserData(message.author.channelID);
+  return 'Du hast aktuell ' + user.coins + ' Coins';
 });
 
 

@@ -103,6 +103,10 @@ class YouTubeApi {
                         lastUpperCase = { char, index }
                 }
                 return badge.slice(lastUpperCase.index);
+            },
+            getUserData: async (channelId) => {
+                const user = await database.get('chatuser').getOne({ channelId });
+                return user;
             }
         }
     }

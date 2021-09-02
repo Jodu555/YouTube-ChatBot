@@ -168,15 +168,17 @@ class YouTubeApi {
                 }
             },
 
-            updateWatchTimeAndSetCoins: (user, time) => {
+            updateWatchTimeAndSetCoins: async (user, time) => {
                 //TODO: Implement the database here
-                // database.get('chatuser').getOne({
-                //     channelId: 'searchColumValue',
-                // });
-                if (this.userDataMap.has(user)) {
-                    const content = this.userDataMap.get(user);
-                    content.watchtime += time;
-                    content.coins += Math.floor(time / 1000 / 60 * this.coinsPerMinute);
+                const user = await database.get('chatuser').getOne({ channelId: user.channelId });
+                if (user) {
+                    const update = {
+                        watchtime: user.watchtime,
+                        coins: user.coins
+                    };
+                    update.watchtime += time;
+                    update.coins += Math.floor(time / 1000 / 60 * this.coinsPerMinute);
+                    const update = await database.get('tablename').update({ channelId: user.channelId }, { ...update });
                 } else {
                     this.userDataMap.set(user, {
                         watchtime: time,

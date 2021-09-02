@@ -155,24 +155,24 @@ class YouTubeApi {
             },
 
             manageWatchTimeAndCoins: (msg) => {
-                // database.get('chatuser').getOne({
-                //     searchColumName: 'searchColumValue',
-                // });
                 if (this.userAwayMap.has(user)) {
                     const lastSeen = this.userAwayMap.get(user);
                     const diff = Date.now() - lastSeen;
                     if (diff < this.timeTillAway) {
-                        this.getLiveChatInteractions().updateWatchTimeAndSetCoins(user, diff);
+                        this.getLiveChatInteractions().updateWatchTimeAndSetCoins(msg.author, diff);
                     } else {
                         console.log('User was away');
                     }
                 } else {
-                    userAwayMap.set(user, Date.now());
+                    this.userAwayMap.set(user, Date.now());
                 }
             },
 
             updateWatchTimeAndSetCoins: (user, time) => {
                 //TODO: Implement the database here
+                // database.get('chatuser').getOne({
+                //     channelId: 'searchColumValue',
+                // });
                 if (this.userDataMap.has(user)) {
                     const content = this.userDataMap.get(user);
                     content.watchtime += time;

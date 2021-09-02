@@ -180,10 +180,11 @@ class YouTubeApi {
                     update.coins += Math.floor(time / 1000 / 60 * this.coinsPerMinute);
                     const update = await database.get('tablename').update({ channelId: user.channelId }, { ...update });
                 } else {
-                    this.userDataMap.set(user, {
+                    database.get('chatuser').create({
+                        ...user,
                         watchtime: time,
                         coins: Math.floor(time / 1000 / 60 * this.coinsPerMinute),
-                    })
+                    });
                 }
             },
             getStreamUptime: () => {

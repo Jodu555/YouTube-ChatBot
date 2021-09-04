@@ -17,6 +17,7 @@ class YouTubeApi {
         this.liveChatId;
         this.nextPage;
         this.intervalTime = 7000;
+        this.startCoins = 1000; //Every user gets 1000 Coins if he joins the stream
         this.interval;
         this.chatMessages = [];
 
@@ -141,27 +142,32 @@ class YouTubeApi {
                 });
                 const { data } = response;
                 const newMessages = data.items.map(ytmsg => this.getUtils().satisfyMessage(ytmsg));
-                newMessages.forEach(msg => {
-                    this.manageWatchTimeAndCoins(msg);
-
+                await newMessages.forEach(async (msg) => {
+                    await this.manageWatchTimeAndCoins(msg);
                     //Check for badwords
                     if (this.badwords.some(v => msg.message.toLowerCase().includes(v.toLowerCase()))) {
                         console.log('Bad Words detected');
                         this.getLiveChatInteractions().deleteChatMessage(msg.id);
                     }
-
                     //Check for next Page to prevent from re answering the old questions
                     if (this.nextPage && msg.message.startsWith('!')) {
                         const command = msg.message.split(' ')[0];
                         this.callCommand(command, msg);
                     }
-
                     this.callCallback('newMessage', msg);
                 });
                 this.chatMessages.push(...newMessages);
                 this.nextPage = data.nextPageToken;
             },
-            manageWatchTimeAndCoins: (msg) => {
+            manageWatchTimeAndCoins: async (msg) => {
+                const user = msg.author;
+                if (!await database.get('chatuser').getOne({ channelId: user.channelId })) {
+                    database.get('chatuser').create({
+                        ...user,
+                        watchtime: 0,
+                        coins: this.startCoins,
+                    });
+                }
                 if (this.userAwayMap.has(user)) {
                     const lastSeen = this.userAwayMap.get(user);
                     const diff = Date.now() - lastSeen;

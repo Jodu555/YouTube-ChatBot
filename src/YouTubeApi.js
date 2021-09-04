@@ -142,18 +142,19 @@ class YouTubeApi {
                 const { data } = response;
                 const newMessages = data.items.map(ytmsg => this.getUtils().satisfyMessage(ytmsg));
                 newMessages.forEach(msg => {
-                    //Check for next Page to prevent from re answering the old questions
-                    if (this.nextPage && msg.message.startsWith('!')) {
-                        const command = msg.message.split(' ')[0];
-                        this.callCommand(command, msg);
-                    }
+                    this.manageWatchTimeAndCoins(msg);
+
                     //Check for badwords
                     if (this.badwords.some(v => msg.message.toLowerCase().includes(v.toLowerCase()))) {
                         console.log('Bad Words detected');
                         this.getLiveChatInteractions().deleteChatMessage(msg.id);
                     }
-                    this.manageWatchTimeAndCoins(msg);
 
+                    //Check for next Page to prevent from re answering the old questions
+                    if (this.nextPage && msg.message.startsWith('!')) {
+                        const command = msg.message.split(' ')[0];
+                        this.callCommand(command, msg);
+                    }
 
                     this.callCallback('newMessage', msg);
                 });

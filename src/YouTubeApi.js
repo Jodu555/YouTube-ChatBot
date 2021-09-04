@@ -7,21 +7,22 @@ const database = Database.getDatabase();
 
 class YouTubeApi {
     constructor() {
+        this.init = false;
         this.callbacks = new Map();
         this.commands = new Map();
-        this.init = false;
-        this.timeTillAway = 1000 * 60 * 5; //When user doesnt write for 5 Minutes he isn't more in the chat 
         this.userAwayMap = new Map();
         this.userDataMap = new Map();
-        this.coinsPerMinute = 1;
+
+        this.timeTillAway = 1000 * 60 * 5; //When user doesnt write for 5 Minutes he isn't more in the chat 
+        this.coinsPerMinute = 1; // The amount of coins a user gains per minute
+        this.intervalTime = 7000; //The millisecond Interval to check for new chatMessages
+        this.startCoins = 1000; //Every user gets 1000 Coins if he joins the stream
+
         this.liveChatId;
         this.nextPage;
-        this.intervalTime = 7000;
-        this.startCoins = 1000; //Every user gets 1000 Coins if he joins the stream
         this.interval;
         this.chatMessages = [];
 
-        this.items = [];
         this.oauth = new OAuth(this);
         this.auth = this.oauth.auth;
 

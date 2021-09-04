@@ -174,11 +174,11 @@ class YouTubeApi {
 
             updateWatchTimeAndSetCoins: async (user, time) => {
                 //TODO: Implement the database here
-                const user = await database.get('chatuser').getOne({ channelId: user.channelId });
+                user = await database.get('chatuser').getOne({ channelId: user.channelId });
                 if (user) {
                     const update = {
-                        watchtime: user.watchtime,
-                        coins: user.coins
+                        watchtime: dbuser.watchtime,
+                        coins: dbuser.coins
                     };
                     update.watchtime += time;
                     update.coins += Math.floor(time / 1000 / 60 * this.coinsPerMinute);

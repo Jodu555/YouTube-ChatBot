@@ -72,8 +72,6 @@ class YouTubeApi {
             this.getLiveChatInteractions().insertChatMessage(returnmessage);
     }
 
-    getOAuth() { return this.oauth }
-
     getUtils() {
         return {
             satisfyMessage: (ytMessaageObject) => {
@@ -254,7 +252,7 @@ class YouTubeApi {
         }
     }
 
-
+    getOAuth() { return this.oauth }
 }
 
 module.exports = YouTubeApi;

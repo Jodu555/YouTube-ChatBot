@@ -105,7 +105,11 @@ class YouTubeApi {
                 return badge.slice(lastUpperCase.index);
             },
             getUserData: async (channelId) => {
-                const user = await database.get('chatuser').getOne({ channelId });
+                const user = await database.get('chatuser').getOne({ channelId }) || {
+                    channelId,
+                    coins: -1,
+                    watchtime: -1,
+                };
                 return user;
             }
         }
@@ -128,7 +132,6 @@ class YouTubeApi {
                     throw new Error('No Active Chat Found');
                 }
             },
-
             getChatMessages: async () => {
                 const response = await youtube.liveChatMessages.list({
                     auth: this.auth,
@@ -157,7 +160,6 @@ class YouTubeApi {
                 this.chatMessages.push(...newMessages);
                 this.nextPage = data.nextPageToken;
             },
-
             manageWatchTimeAndCoins: (msg) => {
                 if (this.userAwayMap.has(user)) {
                     const lastSeen = this.userAwayMap.get(user);
@@ -171,7 +173,6 @@ class YouTubeApi {
                     this.userAwayMap.set(user, Date.now());
                 }
             },
-
             updateWatchTimeAndSetCoins: async (user, time) => {
                 //TODO: Implement the database here
                 user = await database.get('chatuser').getOne({ channelId: user.channelId });
@@ -208,7 +209,6 @@ class YouTubeApi {
                     output += `${seconds} ${seconds > 1 ? 'Sekunden' : 'Sekunde'}`
                 return output;
             },
-
             insertChatMessage: (message) => {
                 try {
                     youtube.liveChatMessages.insert({

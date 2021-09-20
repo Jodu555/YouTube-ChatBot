@@ -6,7 +6,8 @@ const { Database } = require('@jodu555/mysqlapi');
 const database = Database.getDatabase();
 
 class YouTubeApi {
-    constructor() {
+    constructor(io) {
+        this.io = io;
         this.init = false;
         this.callbacks = new Map();
         this.commands = new Map();

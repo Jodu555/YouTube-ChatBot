@@ -3,14 +3,19 @@ const express = require('express');
 const http = require('http');
 const app = express();
 const server = http.Server(app);
-const io = require('socket.io')(server);
+const io = require('socket.io')(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
 const { Database } = require('@jodu555/mysqlapi');
 const database = Database.createDatabase('localhost', 'root', '', 'yt-chatbot');
 database.connect();
 require('./tables').create();
 
 const YouTubeApi = require('./YouTubeApi');
-const youtubeApi = new YouTubeApi();
+const youtubeApi = new YouTubeApi(io);
 
 youtubeApi.setCallback('init', async () => {
   await youtubeApi.getLiveChatInteractions().getCurrentLiveChatID();

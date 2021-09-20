@@ -38,10 +38,9 @@ youtubeApi.registerCommand('!coins', async (command, message) => {
 });
 
 
-
 youtubeApi.setCallback('newMessage', (message) => {
-  // console.log(message);
-});
+  io.emit('newMessage', message);
+})
 
 app.get('/authorize', (request, response) => {
   console.log('/auth');

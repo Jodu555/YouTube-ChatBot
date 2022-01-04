@@ -124,7 +124,7 @@ class YouTubeApi {
                     part: 'snippet',
                     broadcastStatus: 'active'
                 });
-				console.log(response);
+                console.log(response);
                 const latestBroadcast = response.data.items[0];
                 if (latestBroadcast && latestBroadcast.snippet.liveChatId) {
                     this.liveChatId = latestBroadcast.snippet.liveChatId;
@@ -164,7 +164,8 @@ class YouTubeApi {
                 const user = msg.author;
                 if (!(await database.get('chatuser').getOne({ channelId: user.channelId }))) {
                     console.log(user);
-					database.get('chatuser').create({
+                    user.badges = user.badges.length == 0 ? '' : user.badges;
+                    database.get('chatuser').create({
                         ...user,
                         watchtime: 0,
                         coins: this.startCoins,

@@ -124,7 +124,6 @@ class YouTubeApi {
                     part: 'snippet',
                     broadcastStatus: 'active'
                 });
-                console.log(response);
                 const latestBroadcast = response.data.items[0];
                 if (latestBroadcast && latestBroadcast.snippet.liveChatId) {
                     this.liveChatId = latestBroadcast.snippet.liveChatId;

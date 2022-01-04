@@ -124,6 +124,7 @@ class YouTubeApi {
                     part: 'snippet',
                     broadcastStatus: 'active'
                 });
+				console.log(response);
                 const latestBroadcast = response.data.items[0];
                 if (latestBroadcast && latestBroadcast.snippet.liveChatId) {
                     this.liveChatId = latestBroadcast.snippet.liveChatId;
@@ -143,7 +144,7 @@ class YouTubeApi {
                 const { data } = response;
                 const newMessages = data.items.map(ytmsg => this.getUtils().satisfyMessage(ytmsg));
                 await newMessages.forEach(async (msg) => {
-                    await this.manageWatchTimeAndCoins(msg);
+                    await this.getLiveChatInteractions().manageWatchTimeAndCoins(msg);
                     //Check for badwords
                     if (this.badwords.some(v => msg.message.toLowerCase().includes(v.toLowerCase()))) {
                         console.log('Bad Words detected');
@@ -161,8 +162,9 @@ class YouTubeApi {
             },
             manageWatchTimeAndCoins: async (msg) => {
                 const user = msg.author;
-                if (!await database.get('chatuser').getOne({ channelId: user.channelId })) {
-                    database.get('chatuser').create({
+                if (!(await database.get('chatuser').getOne({ channelId: user.channelId }))) {
+                    console.log(user);
+					database.get('chatuser').create({
                         ...user,
                         watchtime: 0,
                         coins: this.startCoins,

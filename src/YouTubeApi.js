@@ -112,6 +112,21 @@ class YouTubeApi {
                     watchtime: -1,
                 };
                 return user;
+            },
+            millisecondsToTimeString: (duration) => {
+                var milliseconds = parseInt((duration % 1000))
+                    , seconds = parseInt((duration / 1000) % 60)
+                    , minutes = parseInt((duration / (1000 * 60)) % 60)
+                    , hours = parseInt((duration / (1000 * 60 * 60)) % 24);
+
+                let output = '';
+                if (hours !== 0)
+                    output += `${hours} ${hours > 1 ? 'Stunden' : 'Stunde'} `
+                if (minutes !== 0)
+                    output += `${minutes} ${minutes > 1 ? 'Minuten' : 'Minute'} und `
+                if (seconds !== 0)
+                    output += `${seconds} ${seconds > 1 ? 'Sekunden' : 'Sekunde'}`
+                return output;
             }
         }
     }
@@ -203,19 +218,19 @@ class YouTubeApi {
             },
             getStreamUptime: () => {
                 let duration = Date.now() - this.startTime.getTime();
+                const output = this.getUtils().millisecondsToTimeString(duration);
+                // var milliseconds = parseInt((duration % 1000))
+                //     , seconds = parseInt((duration / 1000) % 60)
+                //     , minutes = parseInt((duration / (1000 * 60)) % 60)
+                //     , hours = parseInt((duration / (1000 * 60 * 60)) % 24);
 
-                var milliseconds = parseInt((duration % 1000))
-                    , seconds = parseInt((duration / 1000) % 60)
-                    , minutes = parseInt((duration / (1000 * 60)) % 60)
-                    , hours = parseInt((duration / (1000 * 60 * 60)) % 24);
-
-                let output = '';
-                if (hours !== 0)
-                    output += `${hours} ${hours > 1 ? 'Stunden' : 'Stunde'} `
-                if (minutes !== 0)
-                    output += `${minutes} ${minutes > 1 ? 'Minuten' : 'Minute'} und `
-                if (seconds !== 0)
-                    output += `${seconds} ${seconds > 1 ? 'Sekunden' : 'Sekunde'}`
+                // let output = '';
+                // if (hours !== 0)
+                //     output += `${hours} ${hours > 1 ? 'Stunden' : 'Stunde'} `
+                // if (minutes !== 0)
+                //     output += `${minutes} ${minutes > 1 ? 'Minuten' : 'Minute'} und `
+                // if (seconds !== 0)
+                //     output += `${seconds} ${seconds > 1 ? 'Sekunden' : 'Sekunde'}`
                 return output;
             },
             insertChatMessage: (message) => {

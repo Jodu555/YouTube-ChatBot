@@ -36,7 +36,10 @@ youtubeApi.registerCommand('!coins', async (command, message) => {
   const user = await youtubeApi.getUtils().getUserData(message.author.channelID);
   return 'Du hast aktuell ' + user.coins + ' Coins';
 });
-
+youtubeApi.registerCommand('!party', async (command, message) => {
+  const user = await youtubeApi.getUtils().getUserData(message.author.channelID);
+  return 'Du kannst mitspielen indem du einfach deinen Namen in den Chat Schreibst, dan werden wir dich in eine Party einladen!';
+});
 
 youtubeApi.setCallback('newMessage', (message) => {
   io.emit('newMessage', message);

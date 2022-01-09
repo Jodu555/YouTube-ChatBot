@@ -106,6 +106,7 @@ class YouTubeApi {
                 return badge.slice(lastUpperCase.index);
             },
             getUserData: async (channelId) => {
+                console.log(1337, channelId);
                 const user = await database.get('chatuser').getOne({ channelId });
                 console.log(user);
                 return user;

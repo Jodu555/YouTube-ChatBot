@@ -15,7 +15,17 @@ function create() {
         watchtime: 'INT',
         coins: 'INT',
     });
-    //TODO: Maybe add an table with the unique chat messages
+
+    database.createTable('chatmessages', {
+        options: {
+            PK: 'id',
+        },
+        id: 'VARCHAR(512)',
+        author: 'VARCHAR(512)',
+        message: 'TEXT',
+        profileImageUrl: 'TEXT',
+        publishedAt: 'TEXT',
+    });
 }
 
 module.exports = {

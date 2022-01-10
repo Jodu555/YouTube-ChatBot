@@ -18,6 +18,7 @@ const YouTubeApi = require('./YouTubeApi');
 const youtubeApi = new YouTubeApi(io);
 
 youtubeApi.setCallback('init', async () => {
+  return;
   await youtubeApi.getLiveChatInteractions().getCurrentLiveChatID();
   youtubeApi.getLiveChatInteractions().startMessageTracking();
   // youtubeApi.getLiveChatInteractions().insertChatMessage('Hello from the NodeJS Application Second');
@@ -59,6 +60,10 @@ app.get('/callback', (req, response) => {
 });
 
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
+server.listen(PORT, async () => {
   console.log(`Server is listening on ${PORT}`);
+
+  const user = await youtubeApi.getUtils().getUserData('UC80MS3ed304csIeC0LgfI9Q');
 });
+
+

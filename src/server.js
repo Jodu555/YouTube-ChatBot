@@ -63,7 +63,7 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, async () => {
   console.log(`Server is listening on ${PORT}`);
 
-  const user = await youtubeApi.getUtils().getUserData('UC80MS3ed304csIeC0LgfI9Q');
+  // const user = await youtubeApi.getUtils().getUserData('UC80MS3ed304csIeC0LgfI9Q');
 });
 
 

@@ -67,8 +67,8 @@ class YouTubeApi {
         }
     }
 
-    callCommand(command, message) {
-        const returnmessage = this.commands.get(command)(command, message);
+    async callCommand(command, message) {
+        const returnmessage = await this.commands.get(command)(command, message);
         if (message)
             this.getLiveChatInteractions().insertChatMessage(returnmessage);
     }
@@ -106,9 +106,7 @@ class YouTubeApi {
                 return badge.slice(lastUpperCase.index);
             },
             getUserData: async (channelId) => {
-                console.log(1337, channelId);
                 const user = await database.get('chatuser').getOne({ channelId });
-                console.log(user);
                 return user;
             },
             millisecondsToTimeString: (duration) => {
@@ -175,7 +173,6 @@ class YouTubeApi {
             manageWatchTimeAndCoins: async (msg) => {
                 const user = msg.author;
                 if (!(await database.get('chatuser').getOne({ channelId: user.channelId }))) {
-                    console.log(user);
                     user.badges = user.badges.length == 0 ? '' : user.badges;
                     database.get('chatuser').create({
                         ...user,

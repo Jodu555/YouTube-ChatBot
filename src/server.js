@@ -18,7 +18,7 @@ const YouTubeApi = require('./YouTubeApi');
 const youtubeApi = new YouTubeApi(io);
 
 youtubeApi.setCallback('init', async () => {
-  return;
+  // return;
   await youtubeApi.getLiveChatInteractions().getCurrentLiveChatID();
   youtubeApi.getLiveChatInteractions().startMessageTracking();
   // youtubeApi.getLiveChatInteractions().insertChatMessage('Hello from the NodeJS Application Second');
@@ -30,16 +30,16 @@ youtubeApi.registerCommand('!ts', (command, message) => {
   return 'Teamspeak: server1.Jodu555.de';
 });
 youtubeApi.registerCommand('!watchtime', async (command, message) => {
-  const user = await youtubeApi.getUtils().getUserData(message.author.channelID);
-  console.log(1338);
+  const user = await youtubeApi.getUtils().getUserData(message.author.channelId);
   return 'Du guckst den Stream bereits seid ' + user.watchtime / 1000 + ' Sekunden';
 });
 youtubeApi.registerCommand('!coins', async (command, message) => {
-  const user = await youtubeApi.getUtils().getUserData(message.author.channelID);
+  const user = await youtubeApi.getUtils().getUserData(message.author.channelId);
+  console.log(778, user);
   return 'Du hast aktuell ' + user.coins + ' Coins';
 });
 youtubeApi.registerCommand('!party', async (command, message) => {
-  const user = await youtubeApi.getUtils().getUserData(message.author.channelID);
+  const user = await youtubeApi.getUtils().getUserData(message.author.channelId);
   return 'Du kannst mitspielen indem du einfach deinen Namen in den Chat Schreibst, dan werden wir dich in eine Party einladen!';
 });
 

@@ -184,7 +184,7 @@ class YouTubeApi {
                     const lastSeen = this.userAwayMap.get(user);
                     const diff = Date.now() - lastSeen;
                     if (diff < this.timeTillAway) {
-                        this.getLiveChatInteractions().updateWatchTimeAndSetCoins(msg.author, diff);
+                        await this.getLiveChatInteractions().updateWatchTimeAndSetCoins(msg.author, diff);
                     } else {
                         console.log('User was away');
                     }
@@ -195,6 +195,7 @@ class YouTubeApi {
             updateWatchTimeAndSetCoins: async (user, time) => {
                 //TODO: Implement the database here
                 user = await database.get('chatuser').getOne({ channelId: user.channelId });
+                console.log(1337, user, user.channelId);
                 if (user) {
                     const update = {
                         watchtime: dbuser.watchtime,

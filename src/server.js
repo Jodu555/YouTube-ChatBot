@@ -31,11 +31,11 @@ youtubeApi.registerCommand('!ts', (command, message) => {
 });
 youtubeApi.registerCommand('!watchtime', async (command, message) => {
   const user = await youtubeApi.getUtils().getUserData(message.author.channelId);
-  return 'Du guckst den Stream bereits seid ' + user.watchtime / 1000 + ' Sekunden';
+  const timeString = youtubeApi.getUtils().millisecondsToTimeString(user.watchtime);
+  return 'Du guckst den Stream bereits seid ' + timeString + ' Sekunden';
 });
 youtubeApi.registerCommand('!coins', async (command, message) => {
   const user = await youtubeApi.getUtils().getUserData(message.author.channelId);
-  console.log(778, user);
   return 'Du hast aktuell ' + user.coins + ' Coins';
 });
 youtubeApi.registerCommand('!party', async (command, message) => {

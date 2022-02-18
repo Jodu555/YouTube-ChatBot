@@ -27,8 +27,9 @@ class YouTubeApi {
         this.auth = this.oauth.auth;
 
         this.setCallback('init', async () => {
-            const response = await fetch('http://docs.jodu555.de/badwords/de.json');
-            this.badwords = await response.json();
+            // const response = await fetch('http://docs.jodu555.de/badwords/de.json');
+            // this.badwords = await response.json();
+            this.badwords = [];
         });
 
     }
@@ -160,6 +161,7 @@ class YouTubeApi {
                         this.getLiveChatInteractions().deleteChatMessage(msg.id);
                     }
                     //Check for next Page to prevent from re answering the old questions
+                    console.log(this.nextPage);
                     if (this.nextPage && msg.message.startsWith('!')) {
                         const command = msg.message.split(' ')[0];
                         this.callCommand(command, msg);
@@ -179,8 +181,8 @@ class YouTubeApi {
                         coins: this.startCoins,
                     });
                 }
-                if (this.userAwayMap.has(user)) {
-                    const lastSeen = this.userAwayMap.get(user);
+                if (this.userAwayMap.has(user.channelId)) {
+                    const lastSeen = this.userAwayMap.get(user.channelId);
                     const diff = Date.now() - lastSeen;
                     if (diff < this.timeTillAway) {
                         await this.getLiveChatInteractions().updateWatchTimeAndSetCoins(msg.author, diff);
@@ -188,21 +190,20 @@ class YouTubeApi {
                         console.log('User was away');
                     }
                 } else {
-                    this.userAwayMap.set(user, Date.now());
+                    this.userAwayMap.set(user.channelId, Date.now());
                 }
             },
             updateWatchTimeAndSetCoins: async (user, time) => {
                 //TODO: Implement the database here
                 user = await database.get('chatuser').getOne({ channelId: user.channelId });
-                console.log(1337, user, user.channelId);
                 if (user) {
                     const update = {
-                        watchtime: dbuser.watchtime,
-                        coins: dbuser.coins
+                        watchtime: user.watchtime,
+                        coins: user.coins
                     };
                     update.watchtime += time;
                     update.coins += Math.floor(time / 1000 / 60 * this.coinsPerMinute);
-                    await database.get('tablename').update({ channelId: user.channelId }, { ...update });
+                    await database.get('chatuser').update({ channelId: user.channelId }, { ...update });
                 } else {
                     database.get('chatuser').create({
                         ...user,

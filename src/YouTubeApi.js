@@ -17,6 +17,7 @@ class YouTubeApi {
         this.coinsPerMinute = 1; // The amount of coins a user gains per minute
         this.intervalTime = 7000; //The millisecond Interval to check for new chatMessages
         this.startCoins = 1000; //Every user gets 1000 Coins if he joins the stream
+        this.appStart = Date.now();
 
         this.liveChatId;
         this.nextPage;
@@ -123,7 +124,8 @@ class YouTubeApi {
                 if (seconds !== 0)
                     output += `${seconds} ${seconds > 1 ? 'Sekunden' : 'Sekunde'}`
                 return output;
-            }
+            },
+            checkIfOldMessage: (msg) => new Date(msg.publishedAt).getTime() >= this.appStart
         }
     }
 
@@ -160,9 +162,8 @@ class YouTubeApi {
                         console.log('Bad Words detected');
                         this.getLiveChatInteractions().deleteChatMessage(msg.id);
                     }
-                    //Check for next Page to prevent from re answering the old questions
-                    console.log(this.nextPage);
-                    if (this.nextPage && msg.message.startsWith('!')) {
+                    //Check for oldMessage to prevent from reanswering old questions
+                    if (this.getUtils().checkIfOldMessage(msg) && msg.message.startsWith('!')) {
                         const command = msg.message.split(' ')[0];
                         this.callCommand(command, msg);
                     }

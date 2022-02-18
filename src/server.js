@@ -32,7 +32,7 @@ youtubeApi.registerCommand('!ts', (command, message) => {
 youtubeApi.registerCommand('!watchtime', async (command, message) => {
   const user = await youtubeApi.getUtils().getUserData(message.author.channelId);
   const timeString = youtubeApi.getUtils().millisecondsToTimeString(user.watchtime);
-  return 'Du guckst den Stream bereits seid ' + timeString + ' Sekunden';
+  return 'Du guckst den Stream bereits seid ' + timeString;
 });
 youtubeApi.registerCommand('!coins', async (command, message) => {
   const user = await youtubeApi.getUtils().getUserData(message.author.channelId);

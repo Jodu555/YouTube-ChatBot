@@ -129,6 +129,24 @@ class YouTubeApi {
         }
     }
 
+
+    /**
+     * @typedef {Object} ChatMessage
+     * @property {string} id the message id
+     * @property {string} message the message content
+     * @property {string} publishedAt the date where the message got published
+     * @property {Author} author the message author informations
+     */
+
+    /**
+     * @typedef {Object} Author
+     * @property {string} channelId the authors channelId
+     * @property {string} channelUrl the authors channelUrl
+     * @property {string} displayName the display name
+     * @property {string} profileImageUrl the profileImageUrl
+     * @property {string[]} badges a list of badges
+     */
+
     getLiveChatInteractions() {
         return {
             getCurrentLiveChatID: async () => {
@@ -146,7 +164,10 @@ class YouTubeApi {
                     throw new Error('No Active Chat Found');
                 }
             },
-            getChatMessages: async () => {
+            /**
+             * @returns {ChatMessage[]} returns chat messages
+             */
+            getAPIChatMessages: async () => {
                 const response = await youtube.liveChatMessages.list({
                     auth: this.auth,
                     part: 'snippet,authorDetails',
@@ -154,7 +175,10 @@ class YouTubeApi {
                     pageToken: this.nextPage
                 });
                 const { data } = response;
-                const newMessages = data.items.map(ytmsg => this.getUtils().satisfyMessage(ytmsg));
+                return data.items;
+            },
+            getChatMessages: async () => {
+                const newMessages = this.getLiveChatInteractions().getAPIChatMessages().map(ytmsg => this.getUtils().satisfyMessage(ytmsg));
                 await newMessages.forEach(async (msg) => {
                     await this.getLiveChatInteractions().manageWatchTimeAndCoins(msg);
                     //Check for badwords

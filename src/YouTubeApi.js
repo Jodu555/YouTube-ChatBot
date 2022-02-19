@@ -196,6 +196,9 @@ class YouTubeApi {
                 this.chatMessages.push(...newMessages);
                 this.nextPage = data.nextPageToken;
             },
+            /**
+             * @param {ChatMessage} msg - the message
+             */
             manageWatchTimeAndCoins: async (msg) => {
                 const user = msg.author;
                 if (!(await database.get('chatuser').getOne({ channelId: user.channelId }))) {
@@ -218,8 +221,11 @@ class YouTubeApi {
                     this.userAwayMap.set(user.channelId, Date.now());
                 }
             },
+            /**
+             * @param {Author} user - the author
+             * @param {int} time - the time the user have watched
+             */
             updateWatchTimeAndSetCoins: async (user, time) => {
-                //TODO: Implement the database here
                 user = await database.get('chatuser').getOne({ channelId: user.channelId });
                 if (user) {
                     const update = {

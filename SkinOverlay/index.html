@@ -33,6 +33,25 @@
 		<script>
 			const skins = document.querySelector('.skins');
 
+			Array(16)
+				.fill(0)
+				.forEach((_, i) => {
+					switch (i % 3) {
+						case 0:
+							addSkin('Jodu555');
+							break;
+						case 1:
+							addSkin('Seelen_Schwarz');
+							break;
+						case 2:
+							addSkin('TRyFlow');
+							break;
+
+						default:
+							break;
+					}
+				});
+
 			function addSkin(name) {
 				const canvas = document.createElement('canvas');
 				canvas.id = 'skin_container';

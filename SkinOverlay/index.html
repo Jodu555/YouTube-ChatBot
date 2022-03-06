@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<style>
+			*,
+			*::before,
+			*::after {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+			body {
+				width: 100%;
+				height: 100%;
+				background: transparent;
+				/* position: absolute; */
+			}
+
+			.skins {
+				position: absolute;
+				top: 85vh;
+				/* width: 100%; */
+			}
+		</style>
+	</head>
+	<body>
+		<div class="skins"></div>
+		<script src="https://bs-community.github.io/skinview3d/js/skinview3d.bundle.js"></script>
+		<script>
+			const skins = document.querySelector('.skins');
+
+			function addSkin(name) {
+				const canvas = document.createElement('canvas');
+				canvas.id = 'skin_container';
+				skins.appendChild(canvas);
+
+				let skinViewer = new skinview3d.SkinViewer({
+					canvas,
+					width: 80,
+					height: 120,
+					skin: name + '.png',
+				});
+
+				let rotate = skinViewer.animations.add(skinview3d.RotatingAnimation);
+				rotate.speed = Math.random() / 4;
+			}
+		</script>
+	</body>
+</html>

@@ -32,25 +32,28 @@
 		<script src="https://bs-community.github.io/skinview3d/js/skinview3d.bundle.js"></script>
 		<script>
 			const skins = document.querySelector('.skins');
+			addSkin('Jodu555');
+			addSkin('Editfusee');
+			// addSkin('TRyFlow');
+			// addSkin('Seelen_Schwarz');
+			// Array(16)
+			// 	.fill(0)
+			// 	.forEach((_, i) => {
+			// 		switch (i % 3) {
+			// 			case 0:
+			// 				addSkin('Jodu555');
+			// 				break;
+			// 			case 1:
+			// 				addSkin('Seelen_Schwarz');
+			// 				break;
+			// 			case 2:
+			// 				addSkin('TRyFlow');
+			// 				break;
 
-			Array(16)
-				.fill(0)
-				.forEach((_, i) => {
-					switch (i % 3) {
-						case 0:
-							addSkin('Jodu555');
-							break;
-						case 1:
-							addSkin('Seelen_Schwarz');
-							break;
-						case 2:
-							addSkin('TRyFlow');
-							break;
-
-						default:
-							break;
-					}
-				});
+			// 			default:
+			// 				break;
+			// 		}
+			// 	});
 
 			function addSkin(name) {
 				const canvas = document.createElement('canvas');

@@ -31,6 +31,7 @@ youtubeApi.registerCommand('!ts', (command, message) => {
 });
 youtubeApi.registerCommand('!watchtime', async (command, message) => {
   const user = await youtubeApi.getUtils().getUserData(message.author.channelId);
+  if (!user) return 'Du hast noch keine Watchtime'
   const timeString = youtubeApi.getUtils().millisecondsToTimeString(user.watchtime);
   return 'Du guckst den Stream bereits seid ' + timeString;
 });

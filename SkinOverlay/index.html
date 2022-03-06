@@ -34,8 +34,9 @@
 			const skins = document.querySelector('.skins');
 			addSkin('Jodu555');
 			addSkin('Editfusee');
+			addSkin('Seelen_Schwarz');
 			// addSkin('TRyFlow');
-			// addSkin('Seelen_Schwarz');
+
 			// Array(16)
 			// 	.fill(0)
 			// 	.forEach((_, i) => {
@@ -68,7 +69,8 @@
 				});
 
 				let rotate = skinViewer.animations.add(skinview3d.RotatingAnimation);
-				rotate.speed = Math.random() / 4;
+				rotate.speed = Math.random() / 4 + 0.05;
+				// rotate.speed = 0.2;
 			}
 		</script>
 	</body>

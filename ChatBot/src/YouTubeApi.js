@@ -178,7 +178,16 @@ class YouTubeApi {
                 return data.items;
             },
             getChatMessages: async () => {
-                const newMessages = this.getLiveChatInteractions().getAPIChatMessages().map(ytmsg => this.getUtils().satisfyMessage(ytmsg));
+                const response = await youtube.liveChatMessages.list({
+                    auth: this.auth,
+                    part: 'snippet,authorDetails',
+                    liveChatId: this.liveChatId,
+                    pageToken: this.nextPage
+                });
+                const { data } = response;
+                // const tmpmsgs = await this.getLiveChatInteractions().getAPIChatMessages()
+                // const newMessages = tmpmsgs.map(ytmsg => this.getUtils().satisfyMessage(ytmsg));
+                const newMessages = data.items.map(ytmsg => this.getUtils().satisfyMessage(ytmsg));
                 await newMessages.forEach(async (msg) => {
                     await this.getLiveChatInteractions().manageWatchTimeAndCoins(msg);
                     //Check for badwords

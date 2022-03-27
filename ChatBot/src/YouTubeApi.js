@@ -13,7 +13,7 @@ class YouTubeApi {
         this.userAwayMap = new Map();
         this.userDataMap = new Map();
 
-        this.timeTillAway = 1000 * 60 * 5; //When user doesnt write for 5 Minutes he isn't more in the chat 
+        this.timeTillAway = 1000 * 60 * 10; //When user doesnt write for 5 Minutes he isn't more in the chat 
         this.coinsPerMinute = 1; // The amount of coins a user gains per minute
         this.intervalTime = 7000; //The millisecond Interval to check for new chatMessages
         this.startCoins = 1000; //Every user gets 1000 Coins if he joins the stream
@@ -69,6 +69,7 @@ class YouTubeApi {
     }
 
     async callCommand(command, message) {
+        if (!this.commands.get(command)) return;
         const returnmessage = await this.commands.get(command)(command, message);
         if (message)
             this.getLiveChatInteractions().insertChatMessage(returnmessage);
@@ -221,10 +222,11 @@ class YouTubeApi {
                 if (this.userAwayMap.has(user.channelId)) {
                     const lastSeen = this.userAwayMap.get(user.channelId);
                     const diff = Date.now() - lastSeen;
+                    this.userAwayMap.set(user.channelId, Date.now());
                     if (diff < this.timeTillAway) {
                         await this.getLiveChatInteractions().updateWatchTimeAndSetCoins(msg.author, diff);
                     } else {
-                        console.log('User was away');
+                        console.log('User was away ' + user.displayName);
                     }
                 } else {
                     this.userAwayMap.set(user.channelId, Date.now());
@@ -235,6 +237,7 @@ class YouTubeApi {
              * @param {int} time - the time the user have watched
              */
             updateWatchTimeAndSetCoins: async (user, time) => {
+
                 user = await database.get('chatuser').getOne({ channelId: user.channelId });
                 if (user) {
                     const update = {

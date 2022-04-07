@@ -27,7 +27,7 @@ youtubeApi.registerCommand('!uptime', (command, message) => {
   return 'Der Stream ist bereits seit ' + youtubeApi.getLiveChatInteractions().getStreamUptime() + ' Live!'
 });
 youtubeApi.registerCommand('!ts', (command, message) => {
-  return 'Teamspeak: server1.Jodu555.de';
+  return 'Teamspeak: ts.Jodu555.de';
 });
 youtubeApi.registerCommand('!watchtime', async (command, message) => {
   const user = await youtubeApi.getUtils().getUserData(message.author.channelId);
